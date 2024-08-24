@@ -15,16 +15,16 @@ public class Main {
         }
         return false;
     }
-    static void backtracking(int count, int value, int[] arr) {
+    static void backtracking(int depth, int count, int value, int[] arr) {
         max = count > max ? count : max;
 
-        for(int i = 0; i < visited.length; i++) {
-            if(visited[i]) continue;
-            visited[i] = true;
+        if(depth == arr.length) return;
+        if(max > arr.length - depth + count) return;
+
+        for(int i = depth; i < visited.length; i++) {
             if(!isCarry(value, arr[i])) {
-                backtracking(count + 1, value + arr[i], arr);
+                backtracking(i + 1, count + 1, value + arr[i], arr);
             }
-            visited[i] = false;
         }
     }
     
@@ -39,7 +39,7 @@ public class Main {
         for(int i = 0; i < n; i++){
             arr[i] = Integer.parseInt(br.readLine());
         }
-        backtracking(0, 0, arr);
+        backtracking(0, 0, 0, arr);
         bw.write(max + "\n");
         bw.flush();
         br.close();
