@@ -4,9 +4,7 @@ public class Main {
     static int max = 1;
     static boolean[] visited;
     static boolean isCarry(int base, int num) {
-        while(true) {
-            if(base == 0 || num == 0) return false;
-
+        while(base > 0 && num > 0) {
             int baselast = base % 10;
             int numlast = num % 10;
             if(baselast + numlast >= 10) return true;
@@ -15,6 +13,7 @@ public class Main {
                 num /= 10;
             }
         }
+        return false;
     }
     static void backtracking(int count, int value, int[] arr) {
         max = count > max ? count : max;
