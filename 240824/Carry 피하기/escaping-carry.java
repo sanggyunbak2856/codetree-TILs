@@ -1,53 +1,31 @@
-import java.util.*;
 import java.io.*;
-
 
 public class Main {
     static int max = 1;
     static boolean[] visited;
-    static ArrayList<Integer> makeNumList(int num) { // 수를 한자리수씩 뺌
-        ArrayList<Integer> numList = new ArrayList<Integer>();
-        int tmpNum = num;
-        while(true) {
-            if(tmpNum > 10) {
-                int r = tmpNum % 10;
-                numList.add(r);
-                tmpNum /= 10;
-            }
-            else {
-                numList.add(tmpNum);
-                break;
-            }
-        }
-        return numList;
-    }
     static boolean isCarry(int base, int num) {
-        ArrayList<Integer> baseList = makeNumList(base);
-        ArrayList<Integer> numList = makeNumList(num);
+        while(true) {
+            if(base == 0 || num == 0) return false;
 
-        int smaller = baseList.size() < numList.size() ? baseList.size() : numList.size();
-
-        for(int i = 0; i < smaller; i++) {
-            int sum = baseList.get(i) + numList.get(i);
-
-            if(sum >= 10) return true;
+            int baselast = base % 10;
+            int numlast = num % 10;
+            if(baselast + numlast >= 10) return true;
+            else {
+                base /= 10;
+                num /= 10;
+            }
         }
-        return false;
     }
-    static void dfs(int[] arr, int currentValue, int currentCount) {
+    static void backtracking(int count, int value, int[] arr) {
+        max = count > max ? count : max;
+
         for(int i = 0; i < visited.length; i++) {
             if(visited[i]) continue;
-            if(isCarry(arr[i], currentValue)) continue;
-            else {
-                visited[i] = true;
-                currentCount+=1;
-                currentValue+=arr[i];
-                max = currentCount > max ? currentCount : max;
-                dfs(arr, currentValue, currentCount);
-                currentCount-=1;
-                currentValue-=arr[i];
-                visited[i] = false;
+            visited[i] = true;
+            if(!isCarry(value, arr[i])) {
+                backtracking(count + 1, value + arr[i], arr);
             }
+            visited[i] = false;
         }
     }
     
@@ -62,7 +40,7 @@ public class Main {
         for(int i = 0; i < n; i++){
             arr[i] = Integer.parseInt(br.readLine());
         }
-        dfs(arr, 0, 0);
+        backtracking(0, 0, arr);
         bw.write(max + "\n");
         bw.flush();
         br.close();
