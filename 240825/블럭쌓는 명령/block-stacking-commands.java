@@ -20,13 +20,18 @@ public class Main {
             arr[end + 1]--;
         }
 
-        for(int i = 0; i < n + 1; i++) {
+        for(int i = 0; i < n ; i++) {
             arr[i + 1] += arr[i];
         }
 
-        Arrays.sort(arr);
+        int[] newArr = new int[n];
+        for(int i = 0; i < n; i++) {
+            newArr[i] = arr[i + 1];
+        }
 
-        bw.write(arr[arr.length / 2] + "\n");
+        Arrays.sort(newArr);
+
+        bw.write(newArr[newArr.length / 2] + "\n");
         bw.flush();
         br.close();
         bw.close();
